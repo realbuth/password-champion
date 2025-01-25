@@ -112,7 +112,7 @@ const firebaseConfig = {
 };
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-
+const leaderboardRef=db.collection"leaderboard";
         // Leaderboard data
         let leaderboard = [];
 
