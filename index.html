@@ -173,6 +173,7 @@ const leaderboardRef=db.collection("leaderboard");
 
         // Function to add a new password to the leaderboard
         function addToLeaderboard(name, score) {
+            console.log("adding to leaderboard:", name, score);
     leaderboardRef.add({
         name: name,
         score: score
