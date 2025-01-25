@@ -113,6 +113,21 @@ const firebaseConfig = {
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 const leaderboardRef=db.collection"leaderboard";
+        // Real-time listener for the leaderboard
+        leaderboardRef.orderBy("score", "desc").limit(10).onSnapshot(querySnapshot => {
+            const leaderboardElement = document.getElementById("leaderboard");
+            leaderboardElement.innerHTML = ""; // Clear current leaderboard
+
+            querySnapshot.forEach((doc, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${doc.data().name}</td>
+                    <td>${doc.data().score}</td>
+                `;
+                leaderboardElement.appendChild(row);
+            });
+        });
         // Leaderboard data
         let leaderboard = [];
 
@@ -158,29 +173,19 @@ const leaderboardRef=db.collection"leaderboard";
 
         // Function to add a new password to the leaderboard
         function addToLeaderboard(name, score) {
-            leaderboard.push({ name, score });
-            leaderboard.sort((a, b) => b.score - a.
-            score); // Sort by score (highest first)
-            updateLeaderboard();
-        }
+    leaderboardRef.add({
+        name: name,
+        score: score
+    })
+    .then(() => {
+        console.log("Document successfully written!");
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+    });
+}
 
-        // Function to update the leaderboard display
-        function updateLeaderboard() {
-            const leaderboardElement = document.getElementById("leaderboard");
-            leaderboardElement.innerHTML = ""; // Clear current leaderboard
-
-            leaderboard.forEach((entry, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${entry.name}</td>
-                    <td>${entry.score}</td>
-                `;
-                leaderboardElement.appendChild(row);
-            });
-        }
-
-        // Form submission handler
+               // Form submission handler
         document.getElementById("passwordForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
