@@ -113,7 +113,7 @@ const firebaseConfig = {
 };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-const leaderboardRef=db.collection("leaderboard");
+const leaderboardRef=collection( db,"leaderboard");
         // Real-time listener for the leaderboard
         leaderboardRef.orderBy("score", "desc").limit(10).onSnapshot(querySnapshot => {
             const leaderboardElement = document.getElementById("leaderboard");
